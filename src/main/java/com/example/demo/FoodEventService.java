@@ -23,18 +23,18 @@ public class FoodEventService {
         return repo.findConfirmedEvents(LocalDateTime.now());
     }
 
-    public List<FoodEvent> getPotential() {
+    public List<FoodEvents> getPotential() {
         return repo.findPotentialEvents(LocalDateTime.now());
     }
 
     // Events happening today
-    public List<FoodEvent> getToday() {
+    public List<FoodEvents> getToday() {
         LocalDateTime start = LocalDate.now().atStartOfDay();
         LocalDateTime end = start.plusDays(1).minusSeconds(1);
         return repo.findTodayEvents(start, end);
     }
 
-    public FoodEvent getById(Long id) {
+    public FoodEvents getById(Long id) {
         return repo.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Event not found with id: " + id));
     }
