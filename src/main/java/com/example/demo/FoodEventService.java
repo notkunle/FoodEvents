@@ -39,6 +39,40 @@ public class FoodEventService {
                 .orElseThrow(() -> new EntityNotFoundException("Event not found with id: " + id));
     }
 
+    public FoodEvents create(FoodEvents event) {
+        // Always start at 1 report (the person submitting it)
+        event.setReportCount(1);
+        event.setCreatedAt(LocalDateTime.now());
+        return repo.save(event);
+    }
+
+
+    public FoodEvents update(Long id, FoodEvents updated) {
+        FoodEvents existing = getById(id);
+
+        existing.setName(updated.getName());
+        existing.setLocation(updated.getLocation());
+        existing.setRoom(updated.getRoom());
+        existing.setEventTime(updated.getEventTime());
+        existing.setFoodType(updated.getFoodType());
+        existing.setNotes(updated.getNotes());
+        // Note: reportCount is NOT updated here use addReport() instead
+
+        return repo.save(existing);
+    }
+
+    public void delete(Long id) {
+        FoodEvents existing = getById(id); // throws if not found
+        repo.delete(existing);
+    }
+    public FoodEvents addReport(Long id) {
+        FoodEvents event = getById(id);
+        event.setReportCount(event.getReportCount() + 1);
+        return repo.save(event);
+    }
+
+
+
 
 
 
