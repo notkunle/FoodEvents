@@ -11,8 +11,12 @@ import java.util.List;
 @RestController
 @RequestMapping(path = "api/events")
 public class FoodController {
-    @Autowired
-    private FoodEventService service;
+
+    private final FoodEventService service;
+
+    public FoodController(FoodEventService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public ResponseEntity<List<FoodEvents>> getEvents(
@@ -39,7 +43,6 @@ public class FoodController {
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
-
     @PutMapping("/{id}")
     public ResponseEntity<FoodEvents> update(
             @PathVariable Long id,
@@ -48,9 +51,16 @@ public class FoodController {
     }
 
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        service.delete(id);
+        return ResponseEntity.noContent().build();
+    }
 
 
-
-
+    @PostMapping("/{id}/report")
+    public ResponseEntity<FoodEvents> addReport(@PathVariable Long id) {
+        return ResponseEntity.ok(service.addReport(id));
+    }
 
 }
