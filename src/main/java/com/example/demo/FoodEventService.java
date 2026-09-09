@@ -10,7 +10,12 @@ import java.util.*;
 
 @Service
 public class FoodEventService {
-    private FoodEventRepository repo;
+    private final FoodEventRepository repo;
+
+
+    public FoodEventService(FoodEventRepository repo) {
+        this.repo = repo;
+    }
 
 
     public List<FoodEvents> getAllUpcoming(){
@@ -65,16 +70,11 @@ public class FoodEventService {
         FoodEvents existing = getById(id); // throws if not found
         repo.delete(existing);
     }
+
     public FoodEvents addReport(Long id) {
         FoodEvents event = getById(id);
         event.setReportCount(event.getReportCount() + 1);
         return repo.save(event);
     }
-
-
-
-
-
-
 
 }
